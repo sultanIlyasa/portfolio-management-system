@@ -1,0 +1,96 @@
+# Application Information
+spring:
+  application:
+    name: portfolio-management-system
+
+  # Database Configuration (H2 for development)
+  datasource:
+    url: jdbc:h2:mem:portfolio_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: portfolio_user
+    password: portfolio_pass
+
+  # JPA/Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.SnakeCasePhysicalNamingStrategy
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+
+  # H2 Console (for development only)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+
+  # JSON Configuration
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    time-zone: UTC
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    default-property-inclusion: NON_NULL
+
+  # SQL Initialization
+  sql:
+    init:
+      mode: always
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /portfolio-api
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# Management/Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+# Application Info
+info:
+  application:
+    name: Portfolio Management System
+    description: Enterprise investment portfolio management platform
+    version: 1.0.0
+
+# Logging Configuration
+logging:
+  level:
+    com.portfoliomanager.portfolio: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Custom Application Properties
+portfolio:
+  api:
+    version: v1
+    base-path: /api/v1
+  business:
+    max-portfolios-per-user: 10
+    min-portfolio-value: 100.00
+    max-portfolio-value: 10000000.00
+  cache:
+    default-ttl: 300 # 5 minutes in seconds
